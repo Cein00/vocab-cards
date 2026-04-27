@@ -1,4 +1,4 @@
-const API_BASE = '/api';
+const API_BASE = 'https://vocab-cards.onrender.com/api';
 
 export async function apiRequest(url, method = 'GET', body = null, isFormData = false) {
   const options = {
