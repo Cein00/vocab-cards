@@ -17,7 +17,7 @@
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body.dark {
+:root.dark {
   --bg-gradient: linear-gradient(-45deg, #0e0a1e, #1a1025, #140b2a, #0f0720);
   --card-bg: #1e1635;
   --text-primary: #ede9fe;
@@ -30,7 +30,7 @@ body.dark {
   --shadow-glow: 0 0 15px rgba(124, 58, 237, 0.2);
 }
 
-/* Анимация заднего фона */
+/* остальное без изменений */
 @keyframes gradientBG {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
