@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const fetch = require('node-fetch');  // или встроенный fetch (Node 18+)
+
 
 router.get('/', async (req, res) => {
   const { text, lang } = req.query;
@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
     return res.status(400).json({ error: 'text and lang required' });
   }
 
-  const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${lang}&client=tw-ob&q=${encodeURIComponent(text)}`;
+  const ttsUrl = `https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=${lang}&client=gtx&q=${encodeURIComponent(text)}`;
 
   try {
     const response = await fetch(ttsUrl, {
