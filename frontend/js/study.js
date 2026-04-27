@@ -39,23 +39,34 @@ export function startStudy() {
 }
 
 function showCard() {
+  const studyCard = document.getElementById('study-card');
+  const inner = studyCard.querySelector('.study-card-inner');
+  
   if (studyCards.length === 0) {
-    // Все карточки выучены
     document.getElementById('study-term-text').textContent = 'Всё выучено!';
     document.getElementById('study-translation-text').textContent = '';
     document.getElementById('study-progress').textContent = '';
-    document.getElementById('study-card').classList.remove('flipped');
+    studyCard.classList.remove('flipped');
     isFlipped = false;
     return;
   }
+  
   const card = studyCards[currentIndex];
+  
+  // 1. Сбрасываем переворот
+  studyCard.classList.remove('flipped');
+  // 2. Временно отключаем transition
+  inner.style.transition = 'none';
+  // 3. Обновляем текст
   document.getElementById('study-term-text').textContent = card.showFront;
   document.getElementById('study-translation-text').textContent = card.showBack;
-  document.getElementById('study-card').classList.remove('flipped');
+  // 4. Принудительная перерисовка (reflow)
+  void inner.offsetHeight;
+  // 5. Восстанавливаем transition
+  inner.style.transition = '';
+  
   isFlipped = false;
   updateProgress();
-
-  // Автозвук лицевой стороны
   speak(card.showFront, card.frontLang);
 }
 
