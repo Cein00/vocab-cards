@@ -1,0 +1,43 @@
+/* ========== Цветовая схема и Анимации ========== */
+:root {
+  --accent: #7c3aed;
+  --accent-glow: #a78bfa;
+  --accent-light: #c4b5fd;
+  --bg-gradient: linear-gradient(-45deg, #f5f3ff, #ede9fe, #fae8ff, #f3e8ff);
+  --card-bg: #ffffff;
+  --text-primary: #1e1b4b;
+  --text-secondary: #4c4a6e;
+  --border: #e0d7fe;
+  --input-bg: #ffffff;
+  --input-text: #1e1b4b;
+  --shadow-sm: 0 2px 8px rgba(124, 58, 237, 0.08);
+  --shadow-md: 0 4px 20px rgba(124, 58, 237, 0.15);
+  --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.4);
+  --radius: 16px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.dark {
+  --bg-gradient: linear-gradient(-45deg, #0e0a1e, #1a1025, #140b2a, #0f0720);
+  --card-bg: #1e1635;
+  --text-primary: #ede9fe;
+  --text-secondary: #a78bfa;
+  --border: #312e81;
+  --input-bg: #2d214f;
+  --input-text: #ffffff;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 15px rgba(124, 58, 237, 0.2);
+}
+
+/* Анимация заднего фона */
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+body {
+  background-size: 400% 400% !important;
+  animation: gradientBG 15s ease infinite;
+}

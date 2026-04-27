@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Регистрация | Vocab Cards</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <script>
+    (function() {
+      var theme = localStorage.getItem('theme') || 'light';
+      document.body.className = theme;
+    })();
+  </script>
+  <div class="auth-container">
+    <h2><i class="fa-solid fa-user-plus"></i> Регистрация</h2>
+    <form id="register-form">
+      <input type="text" id="reg-username" placeholder="Логин" required autocomplete="username">
+      <div class="password-wrapper">
+        <input type="password" id="reg-password" placeholder="Пароль" required autocomplete="new-password">
+        <i class="fa-solid fa-eye-slash toggle-password" data-target="reg-password"></i>
+      </div>
+      <div class="password-wrapper">
+        <input type="password" id="reg-password2" placeholder="Подтверждение пароля" required autocomplete="new-password">
+        <i class="fa-solid fa-eye-slash toggle-password" data-target="reg-password2"></i>
+      </div>
+      <select id="reg-native-language">
+        <option value="ru">Русский</option>
+        <option value="en">English</option>
+        <option value="pl">Polski</option>
+        <option value="de">Deutsch</option>
+        <option value="fr">Français</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+      </select>
+      <button type="submit">Зарегистрироваться</button>
+    </form>
+    <p>Уже есть аккаунт? <a href="login.html">Войти</a></p>
+    <div id="error-message" class="error"></div>
+  </div>
+<script type="module" src="js/auth.js"></script>
+</body>
+</html>
