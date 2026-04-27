@@ -1,33 +1,48 @@
 const express = require('express');
 const router = express.Router();
-
+const googleTTS = require('google-tts-api');
+const axios = require('axios');
 
 router.get('/', async (req, res) => {
-  const { text, lang } = req.query;
+  let { text, lang } = req.query;
+
   if (!text || !lang) {
     return res.status(400).json({ error: 'text and lang required' });
   }
 
-  const ttsUrl = `https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=${lang}&client=gtx&q=${encodeURIComponent(text)}`;
-
   try {
-    const response = await fetch(ttsUrl, {
-      headers: { 'User-Agent': 'Mozilla/5.0' }
-    });
-    if (!response.ok) throw new Error(`Google TTS status ${response.status}`);
+    // ВЕНГЕРСКИЙ ХАК: 
+    // Если язык венгерский, меняем 'a' на 'o' (потому что в hu 'a' звучит как глубокое 'o')
+    // Но не трогаем 'á' (которая звучит как чистое 'а')
+    let processedText = text;
+    if (lang === 'hu') {
+      processedText = text.replace(/a/g, 'o');
+    }
 
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const url = googleTTS.getAudioUrl(processedText, {
+      lang: lang,
+      slow: false,
+      host: 'https://translate.google.com',
+    });
+
+    const response = await axios({
+      method: 'get',
+      url: url,
+      responseType: 'stream',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+      }
+    });
 
     res.set({
       'Content-Type': 'audio/mpeg',
-      'Content-Length': buffer.length,
       'Cache-Control': 'public, max-age=86400'
     });
-    res.send(buffer);
+
+    response.data.pipe(res);
   } catch (err) {
-    console.error('TTS proxy error:', err.message);
-    res.status(500).json({ error: 'Failed to fetch TTS audio' });
+    console.error('TTS Error:', err.message);
+    res.status(500).json({ error: 'Failed' });
   }
 });
 

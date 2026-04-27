@@ -31,12 +31,18 @@
       </div>
       <div class="header-actions">
         <button id="theme-toggle" class="icon-btn">
-          <i class="fa-solid fa-moon"></i>
+            <i class="fa-solid fa-moon"></i>
         </button>
+        <a href="settings.html" class="icon-btn" title="Настройки">
+            <i class="fa-solid fa-gear"></i>
+        </a>
+        <a href="faq.html" class="icon-btn" title="Частые вопросы">
+            <i class="fa-solid fa-circle-question"></i>
+        </a>
         <button id="logout-btn" class="icon-btn" title="Выйти">
-          <i class="fa-solid fa-right-from-bracket"></i>
+            <i class="fa-solid fa-right-from-bracket"></i>
         </button>
-      </div>
+        </div>
     </header>
 
     <div class="main-layout">
@@ -179,6 +185,8 @@
       document.documentElement.className = theme;
       document.body.className = theme;
     })();
+
+    window.appSettings = { speechEnabled: false };
   </script>
 
   <script type="module" src="js/modal.js"></script>

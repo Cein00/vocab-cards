@@ -1,18 +1,19 @@
 // js/speech.js
 
-// Языки, для которых используем Google Translate TTS (прямая ссылка)
-const USE_GOOGLE_TTS = ['hu']; // венгерский, польский
+// Языки, которые проксируем через наш сервер
+const USE_PROXY_TTS = [];   // венгерский, польский
 
 export function speak(text, lang = 'en') {
   if (!text) return;
+  if (window.appSettings && !window.appSettings.speechEnabled) return; // глобальное отключение озвучки
   const baseLang = lang.split('-')[0];
 
-  if (USE_GOOGLE_TTS.includes(baseLang)) {
-    speakViaGoogleTTS(text, baseLang);
+  if (USE_PROXY_TTS.includes(baseLang)) {
+    speakViaProxy(text, baseLang);
     return;
   }
 
-  // Стандартный Web Speech API для других языков
+  // Остальные языки — как раньше, через Web Speech API
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
@@ -24,27 +25,25 @@ export function speak(text, lang = 'en') {
   window.speechSynthesis.speak(utterance);
 }
 
-// Прямое воспроизведение аудио с Google Translate (без fetch, без CORS)
-let currentGoogleAudio = null;
+let currentAudio = null;
 
-function speakViaGoogleTTS(text, langCode) {
-  if (currentGoogleAudio) {
-    currentGoogleAudio.pause();
-    currentGoogleAudio = null;
+// В файле js/speech.js обнови функцию
+function speakViaProxy(text, langCode) {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
   }
 
-  // Используем translate.googleapis.com и client=gtx – часто не блокируется
-  const url = `https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=${langCode}&client=gtx&q=${encodeURIComponent(text)}`;
+  // Если открыто через Live Server (порт 5500), стучимся на локальный бэк (порт 3000)
+  // На Рендере baseUrl будет пустой строкой
+  const baseUrl = window.location.port === '5500' ? 'http://localhost:3000' : '';
+  const url = `${baseUrl}/api/tts?text=${encodeURIComponent(text)}&lang=${langCode}`;
+  
   const audio = new Audio(url);
-  currentGoogleAudio = audio;
-
-  audio.onended = audio.onerror = () => {
-    currentGoogleAudio = null;
-  };
+  currentAudio = audio;
 
   audio.play().catch(err => {
-    console.warn('Не удалось воспроизвести Google TTS:', err.message);
-    currentGoogleAudio = null;
+    console.warn('Ошибка воспроизведения:', err.message);
   });
 }
 

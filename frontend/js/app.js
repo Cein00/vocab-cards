@@ -2,6 +2,17 @@ import { loadFolders, openFolderModal, closeFolderView } from './folders.js';
 import { openCardModal, removeDuplicates } from './cards.js';
 import { startStudy, exitStudy } from './study.js';
 import { initImportText } from './import-text.js';
+import { apiRequest } from './api.js';
+
+async function loadUserSettings() {
+    try {
+      const settings = await apiRequest('/user/settings');
+        window.appSettings = settings;
+    } catch (err) {
+        console.warn('Настройки не загружены, используются значения по умолчанию', err);
+        window.appSettings = { speechEnabled: false, nativeLanguage: 'ru' };
+    }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     // Тема

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ | Vocab Cards</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="bg-animation">
+    <div class="bg-circle c1"></div>
+    <div class="bg-circle c2"></div>
+    <div class="bg-circle c3"></div>
+    <div class="bg-circle c4"></div>
+</div>
+  <script>
+    (function() {
+      var theme = localStorage.getItem('theme') || 'light';
+      document.body.className = theme;
+    })();
+    if (!localStorage.getItem('token')) {
+      window.location.href = 'login.html';
+    }
+  </script>
+
+  <div class="faq-container">
+    <div class="faq-header">
+      <a href="index.html" class="icon-btn"><i class="fa-solid fa-arrow-left"></i> Назад</a>
+      <h2 class="faq-title"><i class="fa-solid fa-circle-question"></i> Частые вопросы</h2>
+    </div>
+
+    <details class="faq-item">
+      <summary>Как создать новую папку?</summary>
+      <div class="faq-answer">
+        На главном экране нажмите кнопку <strong>«+ Добавить папку»</strong>. Введите название и выберите изучаемый язык. После сохранения папка появится в списке.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Как добавить карточки в папку?</summary>
+      <div class="faq-answer">
+        Откройте нужную папку, затем нажмите <strong>«Добавить»</strong> в панели действий. Введите слово/фразу и перевод. Можно также импортировать сразу много карточек через кнопку <strong>«Импорт»</strong>.
+      </div>
+    </details>
+
+    <!-- остальные вопросы аналогично, вставляем их сюда -->
+
+    <details class="faq-item">
+      <summary>Как выйти из аккаунта?</summary>
+      <div class="faq-answer">
+        Нажмите на иконку выхода (дверь со стрелкой) в правом верхнем углу. Вы будете перенаправлены на страницу входа.
+      </div>
+    </details>
+  </div>
+</body>
+</html>

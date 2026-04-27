@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Настройки | Vocab Cards</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="bg-animation">
+    <div class="bg-circle c1"></div>
+    <div class="bg-circle c2"></div>
+    <div class="bg-circle c3"></div>
+    <div class="bg-circle c4"></div>
+</div>
+  <script>
+    (function() {
+      var theme = localStorage.getItem('theme') || 'light';
+      document.body.className = theme;
+    })();
+    if (!localStorage.getItem('token')) {
+      window.location.href = 'login.html';
+    }
+    window.appSettings = { speechEnabled: false };
+  </script>
+
+  <div class="auth-page">
+    <div class="auth-container settings-container">
+      <div class="settings-header">
+        <a href="index.html" class="icon-btn"><i class="fa-solid fa-arrow-left"></i> Назад</a>
+        <h2 class="settings-title"><i class="fa-solid fa-gear"></i> Настройки</h2>
+      </div>
+
+      <form id="settings-form">
+        <div class="setting-row">
+          <span class="setting-label"><i class="fa-solid fa-volume-high"></i> Озвучка</span>
+          <label class="switch">
+            <input type="checkbox" id="speech-toggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div class="setting-block">
+          <span class="setting-label"><i class="fa-solid fa-language"></i> Родной язык</span>
+          <select id="native-language">
+            <option value="ru">Русский</option>
+            <option value="en">English</option>
+            <option value="pl">Polski</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="hu">Magyar</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+          </select>
+        </div>
+
+        <div class="setting-block">
+          <span class="setting-label"><i class="fa-solid fa-folder-plus"></i> Язык новых папок по умолчанию</span>
+          <select id="default-folder-language">
+            <option value="en">English</option>
+            <option value="pl">Polski</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="hu">Magyar</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="ru">Русский</option>
+          </select>
+        </div>
+
+        <button type="submit" class="full-width">Сохранить настройки</button>
+      </form>
+
+      <div id="settings-message" class="settings-message"></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/settings.js"></script>
+</body>
+</html>

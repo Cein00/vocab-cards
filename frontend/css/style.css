@@ -22,7 +22,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: var(--bg-gradient);
+
 }
 
 .auth-container {
@@ -1697,3 +1697,648 @@ body.folder-open .folders-header {
 body.folder-open .folders-panel {
     max-width: 340px;
 }
+
+/* ========== ИКОНКИ-ССЫЛКИ В ШАПКЕ ========== */
+.header-actions a.icon-btn {
+  text-decoration: none !important;  /* убираем подчёркивание */
+  color: var(--text-primary);        /* наследуем цвет текста */
+}
+
+/* ========== ТОГГЛ (переключатель озвучки) ========== */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 34px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: var(--accent);
+}
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* ========== СТРАНИЦА FAQ ========== */
+.faq-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+.faq-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.faq-header a {
+  text-decoration: none;
+}
+
+details.faq-item {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+details.faq-item[open] {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-glow);
+}
+
+summary {
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+summary::before {
+  content: "\f059";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  color: var(--accent);
+}
+
+.faq-answer {
+  margin-top: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+/* Анимация открытия FAQ */
+details.faq-item[open] .faq-answer {
+  animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;  /* достаточно для любого ответа */
+  }
+}
+
+/* ========== СТРАНИЦА НАСТРОЕК ========== */
+.settings-container {
+  max-width: 500px !important;  /* чуть уже, чем стандартная auth-container */
+  padding: 2rem;
+}
+.settings-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.settings-header a {
+  text-decoration: none;
+}
+.settings-title {
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.setting-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+.setting-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+button.full-width {
+  width: 100%;
+}
+.settings-message {
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ========== СТРАНИЦА FAQ ========== */
+.faq-container {
+  width: 100%;
+  max-width: 600px; /* Фиксируем ширину, чтобы не «прыгало» при открытии */
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+  animation: fadeInUp 0.5s ease;
+}
+
+.faq-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.faq-title {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+summary {
+  padding: 1.2rem 0;
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: var(--transition);
+}
+
+summary:hover {
+  color: var(--accent);
+}
+
+/* Убираем стандартный маркер и добавляем свой через иконку Font Awesome */
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::before {
+  content: "\f054"; /* Иконка стрелочки */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 0.8rem;
+  color: var(--accent);
+  transition: transform 0.3s ease;
+}
+
+details[open] summary::before {
+  transform: rotate(90deg); /* Поворачиваем стрелочку при открытии */
+}
+
+.faq-answer {
+  padding-bottom: 1.2rem;
+  padding-left: 1.8rem; /* Отступ, чтобы текст был под вопросом, а не под стрелкой */
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* ========== СТРАНИЦА НАСТРОЕК ========== */
+.settings-container {
+  width: 100%;
+  max-width: 500px; /* Чуть уже для аккуратности */
+  padding: 2.5rem;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.setting-block {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.setting-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Стилизация выпадающих списков для поддержки темной темы */
+select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  transition: var(--transition);
+  cursor: pointer;
+  appearance: none; /* Убираем системную стрелочку */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237c3aed'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.2rem;
+}
+
+select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+button.full-width {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 1rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+button.full-width:hover {
+  background: var(--accent-glow);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Плавная анимация появления контента */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+details[open] .faq-answer {
+  animation: slideDown 0.3s ease;
+}
+
+/* ========== СТРАНИЦА FAQ (Исправленная) ========== */
+.faq-container {
+    width: 100%;
+    max-width: 600px; /* Фиксируем ширину, чтобы ничего не съезжало */
+    margin: 2rem auto;
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+    animation: fadeInUp 0.5s ease;
+}
+
+.faq-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+}
+
+.faq-title {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+.faq-item {
+    border-bottom: 1px solid var(--border);
+    transition: var(--transition);
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+/* Стилизация раскрывающегося списка */
+summary {
+    padding: 1.2rem 0;
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    transition: var(--transition);
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::before {
+    content: "\f054"; /* Стрелочка FontAwesome */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 0.8rem;
+    color: var(--accent);
+    transition: transform 0.3s ease;
+}
+
+details[open] summary::before {
+    transform: rotate(90deg);
+}
+
+.faq-answer {
+    padding: 0 0 1.2rem 1.8rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.95rem;
+    /* Анимация появления */
+    animation: slideDown 0.3s ease;
+}
+
+/* ========== СТРАНИЦА НАСТРОЕК (Исправленная) ========== */
+.settings-container {
+    background: var(--card-bg) !important;
+    color: var(--text-primary);
+    max-width: 480px !important;
+}
+
+.settings-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.setting-block {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.setting-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Стилизация инпутов и селектов под обе темы */
+select, 
+input[type="text"], 
+input[type="email"], 
+input[type="password"] {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-size: 1rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+select:focus, input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+/* Кастомная стрелочка для селекта, чтобы не была белой в темной теме */
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237c3aed'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+}
+
+.full-width {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.full-width:hover {
+    background: var(--accent-glow);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-2px);
+}
+
+/* Анимации */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Фикс для того, чтобы переменные работали, когда класс на body */
+body.dark {
+    --bg-gradient: linear-gradient(-45deg, #0e0a1e, #1a1025, #120d26, #160f30);
+    --card-bg: #16122c;
+    --text-primary: #f1f0ff;
+    --text-secondary: #b4accf;
+    --border: #2d245d;
+    --input-bg: #1f1a3d;
+    --input-text: #f1f0ff;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 15px rgba(124, 58, 237, 0.2);
+}
+
+/* ========== FAQ СТРАНИЦА ========== */
+.faq-container {
+    width: 100%;
+    max-width: 600px; /* Жесткий лимит ширины, чтобы не разъезжалось */
+    margin: 2rem auto;
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+    border: 1px solid var(--border); /* Единая рамка для всего контейнера */
+}
+
+.faq-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+}
+
+.faq-item {
+    width: 100%; /* Гарантируем одинаковую ширину рамок */
+    border-bottom: 1px solid var(--border);
+    transition: background 0.3s ease;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+summary {
+    padding: 1rem;
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: var(--text-primary);
+    outline: none;
+    user-select: none;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Иконка вопроса */
+summary::before {
+    content: "\f059"; 
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: var(--accent);
+    transition: transform 0.3s ease;
+}
+
+details[open] summary::before {
+    transform: rotate(15deg) scale(1.2);
+}
+
+.faq-answer {
+    padding: 0 1rem 1rem 2.5rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.95rem;
+    animation: fadeInFaq 0.4s ease-out;
+}
+
+/* ========== НАСТРОЙКИ ========== */
+.settings-container {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border);
+    max-width: 480px !important;
+    width: 100%;
+}
+
+.setting-block {
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.setting-label {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Селекты и инпуты теперь гарантированно в теме */
+select, input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--input-bg) !important;
+    color: var(--text-primary) !important;
+    border: 2px solid var(--border) !important;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+select:focus, input:focus {
+    border-color: var(--accent) !important;
+}
+
+/* Кастомная стрелка для темных селектов */
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237c3aed'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 1rem !important;
+}
+
+.full-width {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 1rem;
+    border-radius: var(--radius);
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.full-width:hover {
+    filter: brightness(1.1);
+    box-shadow: var(--shadow-glow);
+}
+
+@keyframes fadeInFaq {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
