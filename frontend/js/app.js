@@ -4,26 +4,23 @@ import { startStudy, exitStudy } from './study.js';
 import { initImportText } from './import-text.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. ТЕМА УЖЕ ПРИМЕНЕНА ИНЛАЙН-СКРИПТОМ В HTML, ПРОСТО ОБНОВЛЯЕМ ИКОНКУ
+    // Тема уже применена, просто иконка
     const savedTheme = localStorage.getItem('theme') || 'light';
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
-        const updateThemeIcon = (theme) => {
-            themeToggle.innerHTML = theme === 'dark' 
-                ? '<i class="fa-solid fa-sun"></i>' 
-                : '<i class="fa-solid fa-moon"></i>';
+        const updateIcon = (t) => {
+            themeToggle.innerHTML = t === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
         };
-        updateThemeIcon(savedTheme);
-
+        updateIcon(savedTheme);
         themeToggle.addEventListener('click', () => {
             const newTheme = document.body.classList.contains('light') ? 'dark' : 'light';
             document.body.className = newTheme;
             localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
+            updateIcon(newTheme);
         });
     }
 
-    // 2. ПРОВЕРКА АВТОРИЗАЦИИ
+    // Авторизация
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
     if (!token || !userData) {
@@ -32,61 +29,50 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // 3. ОТОБРАЖЕНИЕ ИМЕНИ ПОЛЬЗОВАТЕЛЯ
     try {
         const user = JSON.parse(userData);
-        const userNameElem = document.getElementById('user-name');
-        if (userNameElem && user.username) {
-            userNameElem.textContent = user.username;
-        }
-    } catch (e) {
-        console.error("Ошибка парсинга данных пользователя", e);
-    }
+        document.getElementById('user-name').textContent = user.username || 'Пользователь';
+    } catch(e) {}
 
-    // 4. ВЫХОД ИЗ АККАУНТА
-    const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            localStorage.clear();
-            window.location.href = 'login.html';
-        });
-    }
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        localStorage.clear();
+        window.location.href = 'login.html';
+    });
 
-    // 5. ИНИЦИАЛИЗАЦИЯ ДАННЫХ
     loadFolders();
     initImportText();
 
-    // 6. ОБРАБОТЧИКИ КНОПОК
-    const addFolderBtn = document.getElementById('add-folder-btn');
-    if (addFolderBtn) {
-        addFolderBtn.addEventListener('click', () => openFolderModal());
-    }
+    // Кнопка «Добавить папку»
+    document.getElementById('add-folder-btn').addEventListener('click', () => openFolderModal());
 
+    // Кнопка «Назад» — контекстное поведение
     const backBtn = document.getElementById('back-to-folders-btn');
-    if (backBtn) {
-        backBtn.addEventListener('click', () => {
+    backBtn.addEventListener('click', () => {
+        const studyView = document.getElementById('study-view');
+        // Если обучение активно — возвращаемся к карточкам
+        if (!studyView.classList.contains('hidden')) {
+            exitStudy();
+            document.getElementById('cards-grid').classList.remove('hidden');
+            document.getElementById('study-settings').classList.add('hidden');
+            // Не закрываем папку
+        } else {
+            // Обучения нет -> закрываем папку и возвращаемся в список папок
             exitStudy();
             closeFolderView();
-        });
-    }
+        }
+    });
 
-    const addCardBtn = document.getElementById('add-card-btn');
-    if (addCardBtn) {
-        addCardBtn.addEventListener('click', () => openCardModal());
-    }
-
-    const startBtn = document.getElementById('start-study-btn');
-    if (startBtn) {
-        startBtn.addEventListener('click', () => {
-            const settings = document.getElementById('study-settings');
-            if (settings.classList.contains('hidden')) {
-                settings.classList.remove('hidden');
-                startBtn.innerHTML = '<i class="fa-solid fa-play"></i> Начать сейчас';
-            } else {
-                settings.classList.add('hidden');
-                startStudy();
-                startBtn.innerHTML = '<i class="fa-solid fa-play"></i> Старт';
-            }
-        });
-    }
+    // Обработчики для карточек и старта обучения (как раньше)
+    document.getElementById('add-card-btn').addEventListener('click', () => openCardModal());
+    document.getElementById('start-study-btn').addEventListener('click', () => {
+        const settings = document.getElementById('study-settings');
+        if (settings.classList.contains('hidden')) {
+            settings.classList.remove('hidden');
+            document.getElementById('start-study-btn').innerHTML = '<i class="fa-solid fa-play"></i> Начать сейчас';
+        } else {
+            settings.classList.add('hidden');
+            startStudy();
+            document.getElementById('start-study-btn').innerHTML = '<i class="fa-solid fa-play"></i> Старт';
+        }
+    });
 });

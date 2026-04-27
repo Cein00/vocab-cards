@@ -63,19 +63,21 @@ function renderFolders(folders) {
 
 export function openFolderView(folderId, name, lang) {
   currentFolder = { _id: folderId, name, targetLanguage: lang };
+  document.body.classList.add('folder-open');          // ← добавляем класс
   document.getElementById('folders-panel').classList.add('hidden');
   document.getElementById('folder-view').classList.remove('hidden');
   document.getElementById('folder-view-title').textContent = name;
   document.getElementById('add-card-btn').disabled = false;
-  // Загружаем карточки
   loadCards(folderId);
 }
 
 export function closeFolderView() {
   document.getElementById('folder-view').classList.add('hidden');
   document.getElementById('folders-panel').classList.remove('hidden');
+  document.body.classList.remove('folder-open');       // ← убираем класс
   currentFolder = null;
   resetCardView();
+  // exitStudy() вызывается в app.js при необходимости
 }
 
 // Модальное окно папки

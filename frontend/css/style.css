@@ -864,3 +864,233 @@ button:active {
   margin: 1.5rem 0;
   padding-right: 5px;
 }
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition: background 0.4s, color 0.4s;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ========== Анимированный фон ========== */
+#bg-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.08;
+  will-change: transform, opacity;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.bg-circle.c1 {
+  width: 600px;
+  height: 600px;
+  top: -200px;
+  left: -200px;
+  animation: floatCircle1 25s infinite alternate;
+}
+
+.bg-circle.c2 {
+  width: 400px;
+  height: 400px;
+  bottom: -100px;
+  right: -100px;
+  opacity: 0.06;
+  animation: floatCircle2 30s infinite alternate;
+}
+
+.bg-circle.c3 {
+  width: 300px;
+  height: 300px;
+  top: 40%;
+  left: 70%;
+  opacity: 0.07;
+  animation: floatCircle3 20s infinite alternate;
+}
+
+.bg-circle.c4 {
+  width: 500px;
+  height: 500px;
+  top: 60%;
+  left: 10%;
+  opacity: 0.05;
+  animation: floatCircle4 28s infinite alternate;
+}
+
+@keyframes floatCircle1 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(80px, 60px) scale(1.05); }
+}
+@keyframes floatCircle2 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-60px, -80px) scale(0.95); }
+}
+@keyframes floatCircle3 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-100px, 40px) scale(1.02); }
+}
+@keyframes floatCircle4 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(50px, -70px) scale(1.08); }
+}
+
+
+/* ========== Dashboard ========== */
+#app {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  animation: fadeIn 0.5s ease;
+  position: relative;
+  z-index: 1;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+}
+
+/* ... остальное без изменений ... */
+
+/* ========== Главный экран папок ========== */
+/* По умолчанию (без folder-open) main-layout — блочный, папки по центру */
+.main-layout {
+  display: block;
+}
+
+/* Когда папка открыта — боковая панель */
+body.folder-open .main-layout {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.folders-panel {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+body.folder-open .folders-panel {
+  flex: 1 1 280px;
+  max-width: 340px;
+  margin: 0;
+}
+
+.folders-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.folders-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.add-folder-btn {
+  background: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  padding: 0.8rem 2rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.add-folder-btn:hover {
+  background: var(--accent);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Карточки папок */
+.folders {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* вертикальный отступ 8–12px */
+}
+
+.folder-card {
+  background: var(--card-bg);
+  padding: 1rem 16px; /* отступы по бокам 12-16px */
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.3s, border 0.3s;
+  animation: fadeInLeft 0.4s ease both;
+}
+
+.folder-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-glow);
+}
+
+.folder-card.active {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-glow), inset 0 0 10px rgba(124, 58, 237, 0.1);
+  background: linear-gradient(135deg, rgba(124,58,237,0.05), rgba(167,139,250,0.05));
+}
+
+/* при открытой папке прячем заголовок и кнопку (они видны только на главном экране) */
+body.folder-open .folders-header {
+  display: none;
+}
+
+.remove-pair-btn {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+  border: none !important;
+  padding: 8px !important;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: opacity 0.2s;
+  margin: 0 !important;
+  width: auto !important;
+}
+
+.remove-pair-btn:hover {
+  opacity: 0.7;
+  transform: none;
+  color: var(--text-secondary) !important;
+}

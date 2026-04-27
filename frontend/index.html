@@ -10,11 +10,21 @@
 </head>
 <body>
   <script>
+    // Мгновенная тема
     (function() {
       var theme = localStorage.getItem('theme') || 'light';
       document.body.className = theme;
     })();
   </script>
+
+  <!-- Анимированный фон -->
+  <div id="bg-animation">
+    <div class="bg-circle c1"></div>
+    <div class="bg-circle c2"></div>
+    <div class="bg-circle c3"></div>
+    <div class="bg-circle c4"></div>
+  </div>
+
   <div id="app">
     <!-- Шапка -->
     <header>
@@ -34,18 +44,16 @@
 
     <!-- Основная область -->
     <div class="main-layout">
-      <!-- Панель папок -->
+      <!-- Панель папок (центрирована по умолчанию) -->
       <section id="folders-panel" class="folders-panel">
-        <div class="panel-header">
-          <h2><i class="fa-solid fa-folder"></i> Папки</h2>
-          <button id="add-folder-btn" class="icon-btn" title="Добавить папку">
-            <i class="fa-solid fa-plus"></i>
-          </button>
+        <div class="folders-header">
+          <h2>Папки</h2>
+          <button id="add-folder-btn" class="add-folder-btn">+ Добавить папку</button>
         </div>
         <div id="folders-list" class="folders"></div>
       </section>
 
-      <!-- Секция папки -->
+      <!-- Секция папки (скрыта) -->
       <section id="folder-view" class="folder-view hidden">
         <div class="folder-view-header">
           <button id="back-to-folders-btn" class="icon-btn"><i class="fa-solid fa-arrow-left"></i> Назад</button>
