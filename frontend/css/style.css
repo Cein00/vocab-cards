@@ -1438,3 +1438,262 @@ body.folder-open .folders-header {
     border-color: var(--accent);
     color: var(--accent);
 }
+
+/* ========== ПАНЕЛЬ ДЕЙСТВИЙ (вверху) ========== */
+.folder-actions-bar {
+    margin-bottom: 1rem;
+}
+
+.actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    align-items: stretch;
+}
+
+/* Кнопка «Начать обучение» — главная, крупная, растягивается */
+.start-btn {
+    flex: 2 1 200px;
+    min-width: 170px;
+    background: linear-gradient(135deg, #7c3aed, #a78bfa);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 0.9rem 1.2rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(124, 58, 237, 0.6);
+}
+.start-btn:active {
+    transform: translateY(0);
+}
+
+/* Кнопки действий (Добавить, Импорт, Дубликаты) */
+.action-btn {
+    flex: 1 1 140px;
+    min-width: 120px;
+    background: var(--input-bg);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text-primary);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    box-shadow: var(--shadow-sm);
+}
+.action-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(124, 58, 237, 0.05);
+}
+
+/* Мобильный вид: все кнопки в столбик */
+@media (max-width: 640px) {
+    .actions-row {
+        flex-direction: column;
+    }
+    .start-btn,
+    .action-btn {
+        flex: 1 1 auto;
+        width: 100%;
+    }
+}
+
+/* ========== НАСТРОЙКИ ОБУЧЕНИЯ (всегда видны) ========== */
+.study-settings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 0.7rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+.setting-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+.setting-item input[type="checkbox"] {
+    margin: 0;
+}
+
+/* ========== МОДАЛЬНЫЕ ОКНА — фиксация крестика ========== */
+.modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 2rem;
+    position: relative;
+    text-align: center;           /* центрирование содержимого */
+    box-shadow: var(--shadow-glow);
+    animation: fadeInUp 0.3s ease;
+}
+.modal-content h3,
+.modal-content p {
+    text-align: center;
+}
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+.modal-content input,
+.modal-content select,
+.modal-content button[type="submit"] {
+    width: 100%;
+    max-width: 320px;
+}
+
+/* Крестик теперь приклеен к верхнему правому углу окна */
+.close-modal {
+    position: sticky;
+    top: 0;
+    float: right;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    z-index: 10;
+    margin: -1rem -1rem 0 0;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    line-height: 1;
+}
+.close-modal:hover {
+    color: var(--accent);
+    transform: rotate(90deg);
+}
+
+/* Убираем старый абсолютный фикс, если был */
+.modal-content .close-modal {
+    position: sticky;
+}
+
+/* Кастомная модалка (из modal.js) */
+.custom-modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+}
+.custom-modal-close {
+    position: sticky;
+    top: 0;
+    float: right;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    margin: -1rem -1rem 0 0;
+}
+
+/* Контейнер для строк кнопок */
+.folder-actions-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+/* Первая строка: только кнопка старта */
+.actions-row:first-child {
+    width: 100%;
+}
+
+/* Вторая строка: три кнопки в ряд */
+.actions-row:last-child {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    width: 100%;
+}
+
+/* Кнопка Старта — широкая, но с ограничением для десктопа, чтобы не была "бесконечной" */
+.start-btn {
+    width: 100%;
+    max-width: 100%; /* Занимает всю ширину контейнера */
+    padding: 1.2rem;
+    font-size: 1.2rem;
+    box-sizing: border-box;
+}
+
+/* Остальные три кнопки — делят пространство второй строки */
+.action-btn {
+    flex: 1 1 calc(33.333% - 0.8rem); /* Растягиваются, чтобы заполнить строку */
+    min-width: 150px;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+/* Мобильная версия: все кнопки в один столбик и на всю ширину */
+@media (max-width: 640px) {
+    .actions-row:last-child {
+        flex-direction: column;
+    }
+    .action-btn {
+        width: 100%;
+        flex: 1 1 auto;
+    }
+}
+
+.study-settings {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Центрирует элементы по вертикали */
+    gap: 2rem;
+    padding: 1rem 1.5rem;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center; /* Выравнивает текст и инпут/селект по одной линии */
+    gap: 0.8rem;
+}
+
+/* Исправляем селект, убирая принудительный отступ снизу */
+.setting-item select {
+    margin-bottom: 0 !important; /* Убираем 1.5rem из общего стиля */
+    padding: 8px 35px 8px 15px; /* Немного компактнее для строки настроек */
+    height: auto;
+}
+
+.folders-panel {
+    width: 100%;
+    max-width: 1000px; /* Увеличиваем лимит ширины на десктопе */
+    margin: 0 auto;
+}
+
+.folder-card {
+    width: 100%; /* Растягиваем на всю ширину родителя */
+    padding: 1.2rem 2rem; /* Увеличиваем внутренние отступы для объема */
+    box-sizing: border-box;
+}
+
+/* При открытой папке (боковая панель) сужаем обратно */
+body.folder-open .folders-panel {
+    max-width: 340px;
+}

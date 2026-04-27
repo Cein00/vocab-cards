@@ -10,14 +10,12 @@
 </head>
 <body>
   <script>
-    // Мгновенная тема
     (function() {
       var theme = localStorage.getItem('theme') || 'light';
       document.body.className = theme;
     })();
   </script>
 
-  <!-- Анимированный фон -->
   <div id="bg-animation">
     <div class="bg-circle c1"></div>
     <div class="bg-circle c2"></div>
@@ -26,7 +24,6 @@
   </div>
 
   <div id="app">
-    <!-- Шапка -->
     <header>
       <div class="user-info">
         <i class="fa-solid fa-user"></i>
@@ -42,9 +39,7 @@
       </div>
     </header>
 
-    <!-- Основная область -->
     <div class="main-layout">
-      <!-- Панель папок (центрирована по умолчанию) -->
       <section id="folders-panel" class="folders-panel">
         <div class="folders-header">
           <h2>Папки</h2>
@@ -53,48 +48,52 @@
         <div id="folders-list" class="folders"></div>
       </section>
 
-      <!-- Секция папки (скрыта) -->
       <section id="folder-view" class="folder-view hidden">
         <div class="folder-view-header">
           <button id="back-to-folders-btn" class="icon-btn"><i class="fa-solid fa-arrow-left"></i> Назад</button>
           <h2 id="folder-view-title">Карточки</h2>
         </div>
 
-        <!-- ПАНЕЛЬ ДЕЙСТВИЙ (видна только когда НЕ идёт обучение) -->
+        <!-- Основная панель с кнопками -->
         <div id="folder-actions-bar" class="folder-actions-bar">
-          <!-- Главная кнопка наверху -->
-          <button id="start-study-btn" class="start-btn">
-            <i class="fa-solid fa-play"></i> Начать обучение
-          </button>
-          <div class="folder-info-row">
-            <span id="card-count-top" class="card-count">Карточек: 0</span>
-            <button id="add-card-btn" class="tool-btn"><i class="fa-solid fa-plus"></i> Добавить</button>
-            <button id="import-btn" class="tool-btn" title="Импорт из текста">
+          <div class="actions-row">
+            
+            <button id="add-card-btn" class="action-btn">
+              <i class="fa-solid fa-plus"></i> Добавить
+            </button>
+            <button id="import-btn" class="action-btn">
               <i class="fa-solid fa-file-import"></i> Импорт
             </button>
-            <button id="deduplicate-btn" class="tool-btn" title="Удалить дубликаты">
+            <button id="deduplicate-btn" class="action-btn">
               <i class="fa-solid fa-clone"></i> Дубликаты
+            </button>
+            <button id="start-study-btn" class="start-btn">
+              <i class="fa-solid fa-play"></i> Начать обучение
             </button>
           </div>
         </div>
 
-        <!-- ПАНЕЛЬ ОБУЧЕНИЯ (видна только во время обучения) -->
+        <!-- Настройки обучения (теперь всегда видны) -->
+        <div id="study-settings" class="study-settings">
+          <label class="setting-item">
+            <input type="checkbox" id="shuffle-checkbox" checked>
+            <span>Перемешивать</span>
+          </label>
+          <label class="setting-item">
+            <span>Показывать первым:</span>
+            <select id="show-first-select">
+              <option value="term">Изучаемый</option>
+              <option value="translation">Родной</option>
+            </select>
+          </label>
+        </div>
+
+        <!-- Панель обучения (показывается только во время обучения) -->
         <div id="study-actions-bar" class="study-actions-bar hidden">
           <span id="study-progress-top" class="study-progress-text">Осталось: 0</span>
           <button id="restart-study-top-btn" class="icon-btn">
             <i class="fa-solid fa-rotate"></i> Начать сначала
           </button>
-        </div>
-
-        <!-- Настройки обучения -->
-        <div id="study-settings" class="study-settings hidden">
-          <label><input type="checkbox" id="shuffle-checkbox" checked> Перемешивать карточки</label>
-          <label>Показывать первым:
-            <select id="show-first-select">
-              <option value="term">Изучаемый язык</option>
-              <option value="translation">Родной язык</option>
-            </select>
-          </label>
         </div>
 
         <!-- Сетка карточек -->
@@ -122,7 +121,7 @@
       </section>
     </div>
 
-    <!-- Модальное окно папки -->
+    <!-- Модальные окна остаются без изменений, только добавлен венгерский -->
     <div id="folder-modal" class="modal hidden">
       <div class="modal-content">
         <span class="close-modal">&times;</span>
@@ -145,7 +144,6 @@
       </div>
     </div>
 
-    <!-- Модальное окно карточки -->
     <div id="card-modal" class="modal hidden">
       <div class="modal-content">
         <span class="close-modal">&times;</span>
@@ -159,7 +157,6 @@
       </div>
     </div>
 
-    <!-- Модальное окно импорта из текста -->
     <div id="import-text-modal" class="modal hidden">
       <div class="modal-content" style="max-width: 600px;">
         <span class="close-modal">&times;</span>
@@ -184,7 +181,6 @@
     })();
   </script>
 
-  <!-- Подключаем модули -->
   <script type="module" src="js/modal.js"></script>
   <script type="module" src="js/speech.js"></script>
   <script type="module" src="js/folders.js"></script>

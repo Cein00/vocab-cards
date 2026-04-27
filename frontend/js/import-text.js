@@ -5,7 +5,7 @@ import { showModal } from './modal.js';
 
 export function initImportText() {
     const modal = document.getElementById('import-text-modal');
-    const openBtn = document.getElementById('import-trigger-btn'); // новая кнопка
+    const openBtn = document.getElementById('import-btn');  // ← было import-trigger-btn, исправлено
     const closeBtn = modal.querySelector('.close-modal');
     const textarea = document.getElementById('import-textarea');
     const parseBtn = document.getElementById('parse-import-btn');

@@ -5,6 +5,8 @@ import { showModal } from './modal.js';
 
 let cards = [];
 
+
+
 export async function loadCards(folderId) {
     try {
         cards = await apiRequest(`/cards?folderId=${folderId}`);

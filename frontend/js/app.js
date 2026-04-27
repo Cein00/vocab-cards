@@ -2,10 +2,9 @@ import { loadFolders, openFolderModal, closeFolderView } from './folders.js';
 import { openCardModal, removeDuplicates } from './cards.js';
 import { startStudy, exitStudy } from './study.js';
 import { initImportText } from './import-text.js';
-import { showModal } from './modal.js'; // новый модуль модалки
 
 document.addEventListener('DOMContentLoaded', () => {
-    // ========== ТЕМА ==========
+    // Тема
     const themeToggle = document.getElementById('theme-toggle');
     const savedTheme = localStorage.getItem('theme') || 'light';
     const updateThemeIcon = (t) => {
@@ -13,9 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     updateThemeIcon(savedTheme);
 
-    // pointerup – гарантирует одно срабатывание на мобильных
     themeToggle.addEventListener('pointerup', (e) => {
-        e.preventDefault();               // исключаем двойные срабатывания
+        e.preventDefault();
         const current = document.body.classList.contains('light') ? 'light' : 'dark';
         const next = current === 'light' ? 'dark' : 'light';
         document.documentElement.className = next;
@@ -24,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateThemeIcon(next);
     });
 
-    // ========== АВТОРИЗАЦИЯ ==========
+    // Авторизация
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
     if (!token || !userData) {
@@ -32,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'login.html';
         return;
     }
-
     try {
         const user = JSON.parse(userData);
         document.getElementById('user-name').textContent = user.username || 'Пользователь';
@@ -43,54 +40,30 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'login.html';
     });
 
-    // ========== ПАПКИ ==========
     loadFolders();
     initImportText();
 
     document.getElementById('add-folder-btn').addEventListener('click', () => openFolderModal());
 
-    // Кнопка «Назад» (контекстное поведение)
-    const backBtn = document.getElementById('back-to-folders-btn');
-    backBtn.addEventListener('click', () => {
+    // Кнопка «Назад»
+    document.getElementById('back-to-folders-btn').addEventListener('click', () => {
         const studyView = document.getElementById('study-view');
         if (!studyView.classList.contains('hidden')) {
             exitStudy();
-            document.getElementById('cards-grid').classList.remove('hidden');
-            document.getElementById('study-settings').classList.add('hidden');
         } else {
-            exitStudy();
             closeFolderView();
         }
     });
 
-    // ========== КАРТОЧКИ И ОБУЧЕНИЕ ==========
-    document.getElementById('add-card-btn')?.addEventListener('click', () => openCardModal());
+    // Кнопки действий
+    document.getElementById('add-card-btn').addEventListener('click', () => openCardModal());
 
-    // Главная кнопка «Старт»
-    const startBtn = document.getElementById('start-study-main-btn');
-    if (startBtn) {
-        startBtn.addEventListener('click', () => {
-            startStudy();
-        });
-    }
-
-    // Импорт (отдельный обработчик)
-    document.getElementById('import-trigger-btn')?.addEventListener('click', () => {
-        // показываем модальное окно импорта (оно уже инициализировано)
-        document.getElementById('import-text-modal').classList.remove('hidden');
+    // Старт обучения — сразу
+    document.getElementById('start-study-btn').addEventListener('click', () => {
+        startStudy();
     });
 
-    // Дубликаты – единый слушатель
-    const dedupBtn = document.getElementById('deduplicate-btn');
-    if (dedupBtn) {
-        dedupBtn.addEventListener('click', () => {
-            removeDuplicates();
-        });
-    }
-
-    // Обновить счётчик карточек при загрузке папки (вызов из folders.js)
-    window.updateCardCount = (count) => {
-        const cnt = document.getElementById('card-count');
-        if (cnt) cnt.textContent = `Карточек: ${count}`;
-    };
+    document.getElementById('deduplicate-btn').addEventListener('click', () => {
+        removeDuplicates();
+    });
 });
