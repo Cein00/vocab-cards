@@ -8,6 +8,73 @@ let currentIndex = 0;
 let isFlipped = false;
 let shuffle = true;
 
+// Инициализация обработчиков (выполняется один раз при загрузке модуля)
+document.addEventListener('DOMContentLoaded', () => {
+    const studyCardEl = document.getElementById('study-card');
+    if (studyCardEl) {
+        studyCardEl.addEventListener('click', () => {
+            if (studyCards.length === 0) return;
+            studyCardEl.classList.toggle('flipped');
+            isFlipped = !isFlipped;
+            const card = studyCards[currentIndex];
+            if (isFlipped) speak(card.showBack, card.backLang);
+        });
+    }
+
+    const rememberedBtn = document.getElementById('remembered-btn');
+    if (rememberedBtn) {
+        rememberedBtn.addEventListener('click', () => {
+            if (studyCards.length === 0) return;
+            studyCards.splice(currentIndex, 1);
+            if (studyCards.length === 0) {
+                showCard();
+            } else {
+                if (currentIndex >= studyCards.length) currentIndex = studyCards.length - 1;
+                showCard();
+            }
+        });
+    }
+
+    const forgotBtn = document.getElementById('forgot-btn');
+    if (forgotBtn) {
+        forgotBtn.addEventListener('click', () => {
+            if (studyCards.length === 0) return;
+            const card = studyCards.splice(currentIndex, 1)[0];
+            studyCards.push(card);
+            if (currentIndex >= studyCards.length) currentIndex = 0;
+            showCard();
+        });
+    }
+
+    const speakFront = document.getElementById('speak-current');
+    if (speakFront) {
+        speakFront.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (studyCards.length === 0) return;
+            const card = studyCards[currentIndex];
+            speak(card.showFront, card.frontLang);
+        });
+    }
+
+    const speakBack = document.getElementById('speak-translation-current');
+    if (speakBack) {
+        speakBack.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (studyCards.length === 0) return;
+            const card = studyCards[currentIndex];
+            speak(card.showBack, card.backLang);
+        });
+    }
+
+    // Кнопка «Начать сначала» (в верхней панели обучения)
+    const restartTopBtn = document.getElementById('restart-study-top-btn');
+    if (restartTopBtn) {
+        restartTopBtn.addEventListener('click', () => {
+            startStudy();
+        });
+    }
+});
+
 export function startStudy() {
     const cards = getCards();
     if (cards.length === 0) {
@@ -30,36 +97,48 @@ export function startStudy() {
     currentIndex = 0;
 
     // Переключение панелей
-    document.getElementById('folder-actions-bar').classList.add('hidden');
-    document.getElementById('study-actions-bar').classList.remove('hidden');
+    const actionsBar = document.getElementById('folder-actions-bar');
+    const studyBar = document.getElementById('study-actions-bar');
+    if (actionsBar) actionsBar.classList.add('hidden');
+    if (studyBar) studyBar.classList.remove('hidden');
 
     document.getElementById('cards-grid').classList.add('hidden');
     document.getElementById('study-view').classList.remove('hidden');
-    document.getElementById('study-settings').classList.add('hidden');
+
+    const settings = document.getElementById('study-settings');
+    if (settings) settings.classList.add('hidden');
 
     showCard();
 }
 
 function showCard() {
     const studyCard = document.getElementById('study-card');
-    const inner = studyCard.querySelector('.study-card-inner');
+    const inner = studyCard?.querySelector('.study-card-inner');
 
     if (studyCards.length === 0) {
-        document.getElementById('study-term-text').textContent = 'Всё выучено!';
-        document.getElementById('study-translation-text').textContent = '';
+        const termText = document.getElementById('study-term-text');
+        const transText = document.getElementById('study-translation-text');
+        if (termText) termText.textContent = 'Всё выучено!';
+        if (transText) transText.textContent = '';
         updateStudyInfo(0);
-        studyCard.classList.remove('flipped');
+        if (studyCard) studyCard.classList.remove('flipped');
         isFlipped = false;
         return;
     }
 
     const card = studyCards[currentIndex];
-    studyCard.classList.remove('flipped');
-    inner.style.transition = 'none';
-    document.getElementById('study-term-text').textContent = card.showFront;
-    document.getElementById('study-translation-text').textContent = card.showBack;
-    void inner.offsetHeight;
-    inner.style.transition = '';
+    if (studyCard) studyCard.classList.remove('flipped');
+    if (inner) {
+        inner.style.transition = 'none';
+    }
+    const termText = document.getElementById('study-term-text');
+    const transText = document.getElementById('study-translation-text');
+    if (termText) termText.textContent = card.showFront;
+    if (transText) transText.textContent = card.showBack;
+    if (inner) {
+        void inner.offsetHeight; // reflow
+        inner.style.transition = '';
+    }
     isFlipped = false;
     updateStudyInfo(studyCards.length);
     speak(card.showFront, card.frontLang);
@@ -68,63 +147,19 @@ function showCard() {
 function updateStudyInfo(remaining) {
     const progressTop = document.getElementById('study-progress-top');
     if (progressTop) progressTop.textContent = `Осталось: ${remaining}`;
-    const progressBottom = document.getElementById('study-progress');
-    if (progressBottom) progressBottom.textContent = `Осталось: ${remaining} | Текущая: ${currentIndex + 1}`;
 }
 
-// Обработчики кнопок (основные)
-document.getElementById('study-card').addEventListener('click', () => {
-    if (studyCards.length === 0) return;
-    const studyCard = document.getElementById('study-card');
-    studyCard.classList.toggle('flipped');
-    isFlipped = !isFlipped;
-    const card = studyCards[currentIndex];
-    if (isFlipped) speak(card.showBack, card.backLang);
-});
-
-document.getElementById('remembered-btn').addEventListener('click', () => {
-    if (studyCards.length === 0) return;
-    studyCards.splice(currentIndex, 1);
-    if (studyCards.length === 0) {
-        showCard();
-    } else {
-        if (currentIndex >= studyCards.length) currentIndex = studyCards.length - 1;
-        showCard();
-    }
-});
-
-document.getElementById('forgot-btn').addEventListener('click', () => {
-    if (studyCards.length === 0) return;
-    const card = studyCards.splice(currentIndex, 1)[0];
-    studyCards.push(card);
-    if (currentIndex >= studyCards.length) currentIndex = 0;
-    showCard();
-});
-
-// Начать сначала (кнопка и в верхней панели, и в нижней)
-function restartStudy() { startStudy(); }
-document.getElementById('restart-study-btn').addEventListener('click', restartStudy);
-document.getElementById('restart-study-top-btn').addEventListener('click', restartStudy);
-
-document.getElementById('speak-current').addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (studyCards.length === 0) return;
-    const card = studyCards[currentIndex];
-    speak(card.showFront, card.frontLang);
-});
-
-document.getElementById('speak-translation-current').addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (studyCards.length === 0) return;
-    const card = studyCards[currentIndex];
-    speak(card.showBack, card.backLang);
-});
-
 export function exitStudy() {
-    document.getElementById('study-view').classList.add('hidden');
-    document.getElementById('cards-grid').classList.remove('hidden');
-    document.getElementById('folder-actions-bar').classList.remove('hidden');
-    document.getElementById('study-actions-bar').classList.add('hidden');
+    const studyView = document.getElementById('study-view');
+    const cardsGrid = document.getElementById('cards-grid');
+    const actionsBar = document.getElementById('folder-actions-bar');
+    const studyBar = document.getElementById('study-actions-bar');
+
+    if (studyView) studyView.classList.add('hidden');
+    if (cardsGrid) cardsGrid.classList.remove('hidden');
+    if (actionsBar) actionsBar.classList.remove('hidden');
+    if (studyBar) studyBar.classList.add('hidden');
+
     studyCards = [];
 }
 
