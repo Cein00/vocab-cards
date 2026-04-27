@@ -121,6 +121,55 @@ export function getCards() {
   return cards;
 }
 
+// Удаляет дубликаты карточек в текущей папке
+export async function removeDuplicates() {
+    if (!currentFolder) {
+        alert('Сначала откройте папку');
+        return;
+    }
+    const cards = getCards(); // текущий массив карточек в памяти
+    if (cards.length === 0) {
+        alert('Нет карточек для проверки');
+        return;
+    }
+
+    // Группируем по паре term+translation (без учёта регистра и лишних пробелов)
+    const seen = new Map();
+    const duplicates = [];
+
+    cards.forEach(card => {
+        const key = `${card.term.trim().toLowerCase()}|${card.translation.trim().toLowerCase()}`;
+        if (seen.has(key)) {
+            duplicates.push({ id: card._id, term: card.term, translation: card.translation });
+        } else {
+            seen.set(key, card._id);
+        }
+    });
+
+    if (duplicates.length === 0) {
+        alert('Дубликаты не найдены');
+        return;
+    }
+
+    const confirmed = confirm(
+        `Найдено ${duplicates.length} дубликат(ов). Удалить их, оставив по одному слову?`
+    );
+    if (!confirmed) return;
+
+    try {
+        // Удаляем каждый дубликат через API
+        for (const dup of duplicates) {
+            await apiRequest(`/cards/${dup.id}`, 'DELETE');
+        }
+        alert(`✅ Удалено ${duplicates.length} дубликатов`);
+        // Обновляем список карточек
+        await loadCards(currentFolder._id);
+    } catch (err) {
+        alert('Ошибка при удалении дубликатов: ' + err.message);
+        console.error(err);
+    }
+}
+
 function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;

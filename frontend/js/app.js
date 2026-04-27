@@ -1,5 +1,5 @@
 import { loadFolders, openFolderModal, closeFolderView } from './folders.js';
-import { openCardModal } from './cards.js';
+import { openCardModal, removeDuplicates } from './cards.js';
 import { startStudy, exitStudy } from './study.js';
 import { initImportText } from './import-text.js';
 
@@ -14,9 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
         updateIcon(savedTheme);
         themeToggle.addEventListener('click', () => {
             const newTheme = document.body.classList.contains('light') ? 'dark' : 'light';
+            document.documentElement.className = newTheme;
             document.body.className = newTheme;
             localStorage.setItem('theme', newTheme);
-            updateIcon(newTheme);
+            updateThemeIcon(newTheme);
         });
     }
 
@@ -74,5 +75,12 @@ document.addEventListener('DOMContentLoaded', () => {
             startStudy();
             document.getElementById('start-study-btn').innerHTML = '<i class="fa-solid fa-play"></i> Старт';
         }
+        const deduplicateBtn = document.getElementById('deduplicate-btn');
+        if (deduplicateBtn) {
+            deduplicateBtn.addEventListener('click', () => {
+                removeDuplicates();
+            });
+        }
     });
+    
 });

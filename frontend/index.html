@@ -68,6 +68,9 @@
             <button id="start-study-btn" class="icon-btn" title="Начать обучение">
               <i class="fa-solid fa-play"></i> Старт
             </button>
+            <button id="deduplicate-btn" class="icon-btn" title="Удалить дубликаты">
+                <i class="fa-solid fa-clone"></i> Дубликаты
+            </button>
           </div>
         </div>
 
@@ -165,7 +168,15 @@
     if (!localStorage.getItem('token')) {
       window.location.href = 'login.html';
     }
+      (function() {
+            var theme = localStorage.getItem('theme') || 'light';
+            document.documentElement.className = theme;
+            document.body.className = theme;
+        })();
   </script>
+
+
+
 
   <script type="module" src="js/speech.js"></script>
   <script type="module" src="js/folders.js"></script>
