@@ -69,6 +69,11 @@ export function openFolderView(folderId, name, lang) {
   document.getElementById('folder-view-title').textContent = name;
   document.getElementById('add-card-btn').disabled = false;
   loadCards(folderId);
+  document.getElementById('folder-actions-bar').classList.remove('hidden'); // на всякий случай
+    loadCards(folderId).then(() => {
+        const cards = getCards();
+        document.getElementById('card-count-top').textContent = `Карточек: ${cards.length}`;
+    });
 }
 
 export function closeFolderView() {
