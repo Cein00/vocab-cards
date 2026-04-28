@@ -9,20 +9,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Загружаем текущие настройки с сервера
     async function loadSettings() {
-        try {
-            const data = await apiRequest('/user/settings');
-            window.appSettings = data;
-            localStorage.setItem('appSettings', JSON.stringify(data));
-            if (data) {
-                speechToggle.checked = !!data.speechEnabled;
-                nativeLanguage.value = data.nativeLanguage || 'ru';
-                defaultFolderLang.value = data.defaultFolderLanguage || 'en';
-            }
-        } catch (err) {
-            console.error('Ошибка загрузки настроек:', err);
-            messageEl.textContent = 'Не удалось загрузить настройки. Попробуйте позже.';
-        }
+  try {
+    const data = await apiRequest('/user/settings');
+    if (data) {
+      speechToggle.checked = !!data.speechEnabled;
+      nativeLanguage.value = data.nativeLanguage || 'ru';
+      defaultFolderLang.value = data.defaultFolderLanguage || 'en';
+      // Сохраняем в глобальную переменную для текущей вкладки
+      window.appSettings = {
+        speechEnabled: data.speechEnabled,
+        nativeLanguage: data.nativeLanguage,
+        defaultFolderLanguage: data.defaultFolderLanguage
+      };
+    } else {
+      // Если данных нет, устанавливаем значения по умолчанию
+      speechToggle.checked = false;
+      nativeLanguage.value = 'ru';
+      defaultFolderLang.value = 'en';
     }
+  } catch (err) {
+    console.error('Ошибка загрузки настроек:', err);
+    messageEl.textContent = 'Не удалось загрузить настройки. Попробуйте позже.';
+  }
+}
 
     loadSettings();
 
@@ -41,6 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // при следующей загрузке index свежие настройки подхватятся.
             if (window.opener && window.opener.appSettings) {
                 window.opener.appSettings = data;
+
+                // Обновляем в текущем окне
+                window.appSettings = payload;
+                // Сохраняем дубль в localStorage, чтобы другие вкладки могли подхватить
+                localStorage.setItem('appSettings', JSON.stringify(payload));
             }
             messageEl.textContent = '✅ Настройки сохранены';
             messageEl.style.color = 'var(--accent)';

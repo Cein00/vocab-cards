@@ -190,13 +190,15 @@
 
     // Добавить в app.js:
     window.addEventListener('pageshow', () => {
-        loadUserSettings(); // перезагружаем при возврате из settings
+        loadSettings(); // перезагружаем при возврате из settings
     });
 
     window.addEventListener('storage', (e) => {
-    if (e.key === 'appSettings' && e.newValue) {
-        window.appSettings = JSON.parse(e.newValue);
-    }
+  if (e.key === 'appSettings' && e.newValue) {
+    window.appSettings = JSON.parse(e.newValue);
+    // Дополнительно: обновить speechEnabled в реальном времени
+    if (typeof window.updateSpeech === 'function') window.updateSpeech();
+  }
 });
   </script>
 

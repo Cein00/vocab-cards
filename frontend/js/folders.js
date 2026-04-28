@@ -106,23 +106,23 @@ const folderLangSelect = document.getElementById('folder-language');
 const folderModalTitle = document.getElementById('folder-modal-title');
 
 export function openFolderModal(folder = null) {
-    // В openFolderModal
-   
-    if (folder) {
-        folderModalTitle.textContent = 'Редактировать папку';
-        folderIdInput.value = folder._id;
-        folderNameInput.value = folder.name;
-        folderLangSelect.value = folder.targetLanguage;
-    } else {
-        if (!folder) {
-        folderModalTitle.textContent = 'Новая папка';
-        folderIdInput.value = '';
-        folderNameInput.value = '';
-        const defaultLang = window.appSettings?.defaultFolderLanguage || 'en';
-        folderLangSelect.value = defaultLang;
-    }
-    }
-    folderModal.classList.remove('hidden');
+  if (!folderModal) return;
+  if (folder) {
+    // редактирование
+    folderModalTitle.textContent = 'Редактировать папку';
+    folderIdInput.value = folder._id;
+    folderNameInput.value = folder.name;
+    folderLangSelect.value = folder.targetLanguage;
+  } else {
+    // новая папка
+    folderModalTitle.textContent = 'Новая папка';
+    folderIdInput.value = '';
+    folderNameInput.value = '';
+    // Берём язык из настроек, по умолчанию 'en'
+    const defaultLang = window.appSettings?.defaultFolderLanguage || 'en';
+    folderLangSelect.value = defaultLang;
+  }
+  folderModal.classList.remove('hidden');
 }
 
 folderForm?.addEventListener('submit', async (e) => {

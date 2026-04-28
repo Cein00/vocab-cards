@@ -5,7 +5,7 @@ const USE_PROXY_TTS = [];   // венгерский, польский
 
 export function speak(text, lang = 'en') {
   if (!text) return;
-  if (window.appSettings && !window.appSettings.speechEnabled) return; // глобальное отключение озвучки
+  if (window.appSettings && window.appSettings.speechEnabled === false) return;
   const baseLang = lang.split('-')[0];
 
   if (USE_PROXY_TTS.includes(baseLang)) {
