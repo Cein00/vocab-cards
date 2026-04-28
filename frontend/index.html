@@ -190,7 +190,7 @@
 
     // Добавить в app.js:
     window.addEventListener('pageshow', () => {
-        loadSettings(); // перезагружаем при возврате из settings
+        loadUserSettings(); // перезагружаем при возврате из settings
     });
 
     window.addEventListener('storage', (e) => {

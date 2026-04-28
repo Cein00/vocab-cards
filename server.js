@@ -25,6 +25,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/folders', folderRoutes);
 app.use('/api/cards', cardRoutes);
 app.use('/api/tts', require('./routes/tts'));
+app.use('/api/user/settings', require('./routes/settings'));
 
 // Catch-all: для любого несовпавшего маршрута (SPA) отдаём index.html
 app.use((req, res) => {

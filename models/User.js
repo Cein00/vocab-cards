@@ -5,7 +5,10 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true, trim: true },
   password: { type: String, required: true },
   nativeLanguage: { type: String, default: 'ru' },
+  speechEnabled: { type: Boolean, default: false },
+  defaultFolderLanguage: { type: String, default: 'en' },
 }, { timestamps: true });
+
 
 // Хешируем пароль перед сохранением
 userSchema.pre('save', async function() {

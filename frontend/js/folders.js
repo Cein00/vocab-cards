@@ -119,6 +119,7 @@ export function openFolderModal(folder = null) {
     folderIdInput.value = '';
     folderNameInput.value = '';
     // Берём язык из настроек, по умолчанию 'en'
+
     const defaultLang = window.appSettings?.defaultFolderLanguage || 'en';
     folderLangSelect.value = defaultLang;
   }
