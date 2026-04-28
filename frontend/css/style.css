@@ -2431,3 +2431,98 @@ body.dark .qr-code {
     opacity: 1;
     transform: translateX(-50%) translateY(-10px);
 }
+
+.toast-notification {
+    visibility: hidden;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--accent);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-glow);
+    z-index: 1000;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s;
+    font-weight: 600;
+}
+.toast-notification.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+/* ========== УЛУЧШЕННЫЕ УВЕДОМЛЕНИЯ (TOAST) ========== */
+.toast-notification {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(30px);
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    border-radius: 60px;
+    padding: 12px 24px;
+    min-width: 240px;
+    max-width: 90vw;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--border);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    font-size: 1rem;
+    backdrop-filter: blur(8px);
+    background: rgba(30, 22, 53, 0.9);
+    transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+/* Светлая тема */
+body.light .toast-notification {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.15), 0 0 0 1px var(--border);
+}
+/* Появление */
+.toast-notification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+/* Исчезновение */
+.toast-notification.hide {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+}
+/* Иконка */
+.toast-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+.toast-success .toast-icon {
+    color: #10b981;
+}
+.toast-error .toast-icon {
+    color: #ef4444;
+}
+.toast-info .toast-icon {
+    color: var(--accent);
+}
+/* Текст */
+.toast-message {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* Адаптив для мобильных */
+@media (max-width: 640px) {
+    .toast-notification {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        min-width: 180px;
+    }
+    .toast-icon {
+        font-size: 1.2rem;
+    }
+}

@@ -29,6 +29,7 @@ function renderFolders(folders) {
             </div>
             <div class="folder-actions">
                 <i class="fa-solid fa-pen-to-square edit-folder" title="Редактировать"></i>
+                <i class="fa-solid fa-download download-folder" title="Скачать карточки"></i>
                 <i class="fa-solid fa-trash delete-folder" title="Удалить"></i>
             </div>
         `;
@@ -59,6 +60,13 @@ function renderFolders(folders) {
                     showModal('Ошибка', err.message);
                 }
             }
+            return;
+        }
+
+        // В container.onclick, после условия для редактирования, добавить:
+        if (e.target.classList.contains('download-folder')) {
+            e.stopPropagation();
+            downloadFolder(folderId, folderName);
             return;
         }
 
@@ -152,4 +160,75 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// Функция для копирования карточек папки в буфер обмена
+async function downloadFolder(folderId, folderName) {
+    try {
+        // Загружаем карточки с сервера для этой папки
+        const cards = await apiRequest(`/cards?folderId=${folderId}`);
+        if (!cards.length) {
+            showToast(`В папке «${folderName}» нет карточек`, 'info');
+            return;
+        }
+        // Формируем текст: слово - перевод (каждая пара с новой строки)
+        const lines = cards.map(card => `${card.term} - ${card.translation}`);
+        const text = lines.join('\n');
+        // Копируем в буфер обмена
+        await navigator.clipboard.writeText(text);
+        showToast(`Скопировано ${cards.length} карточек из папки «${folderName}»`, 'success');
+    } catch (err) {
+        console.error('Ошибка при скачивании папки:', err);
+        showToast('❌ Не удалось скопировать карточки', 'error');
+    }
+}
+
+/**
+ * Показывает всплывающее уведомление с иконкой и анимацией.
+ * @param {string} message - текст уведомления
+ * @param {string} type - тип: 'success', 'error', 'info' (по умолчанию 'info')
+ */
+function showToast(message, type = 'success') {
+    // Удаляем предыдущее уведомление, если есть
+    const existingToast = document.querySelector('.toast-notification');
+    if (existingToast) existingToast.remove();
+
+    // Выбираем иконку в зависимости от типа
+    let iconHtml = '';
+    switch (type) {
+        case 'success':
+            iconHtml = '<i class="fa-solid fa-circle-check"></i>';
+            break;
+        case 'error':
+            iconHtml = '<i class="fa-solid fa-circle-exclamation"></i>';
+            break;
+        case 'info':
+        default:
+            iconHtml = '<i class="fa-solid fa-circle-info"></i>';
+            break;
+    }
+
+    // Создаём элемент уведомления
+    const toast = document.createElement('div');
+    toast.className = `toast-notification toast-${type}`;
+    toast.innerHTML = `
+        <div class="toast-icon">${iconHtml}</div>
+        <div class="toast-message">${escapeHtml(message)}</div>
+    `;
+    document.body.appendChild(toast);
+
+    // Принудительный reflow для запуска анимации
+    toast.offsetHeight;
+
+    // Добавляем класс для показа с анимацией
+    toast.classList.add('show');
+
+    // Убираем через 3 секунды с анимацией
+    setTimeout(() => {
+        toast.classList.remove('show');
+        toast.classList.add('hide');
+        setTimeout(() => {
+            if (toast.parentNode) toast.remove();
+        }, 300);
+    }, 3000);
 }
