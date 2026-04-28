@@ -2342,3 +2342,92 @@ select {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Контейнер, который держит QR и волны */
+.qr-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: transparent; /* Прозрачный фон внутри */
+}
+
+/* Сами волны (рамка) */
+.qr-frame, .qr-frame::before, .qr-frame::after {
+  content: '';
+  position: absolute;
+  border: 2px solid var(--accent);
+  border-radius: 20px; /* Скругление как у твоих карточек */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  animation: soundWaves 3s infinite linear;
+  opacity: 0;
+}
+
+/* Вторая волна с задержкой */
+.qr-frame::before {
+  animation-delay: 1s;
+}
+
+/* Третья волна с задержкой */
+.qr-frame::after {
+  animation-delay: 2s;
+}
+
+/* Анимация звуковой волны */
+@keyframes soundWaves {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+    border-color: var(--accent);
+  }
+  50% {
+    opacity: 0.8;
+    border-color: var(--accent-glow);
+    box-shadow: 0 0 15px var(--accent-glow);
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 0;
+    border-color: var(--accent);
+  }
+}
+
+/* Стиль самого QR-кода */
+.qr-code {
+  max-width: 180px;
+  position: relative;
+  z-index: 2;
+  border-radius: 10px;
+  transition: filter 0.4s ease;
+}
+
+/* Инверсия для темной темы */
+body.dark .qr-code {
+  filter: invert(1) hue-rotate(180deg) brightness(1.2);
+}
+
+.toast-notification {
+    visibility: hidden;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--accent);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-glow);
+    z-index: 1000;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s;
+    font-weight: 600;
+}
+
+.toast-notification.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px);
+}
