@@ -1,6 +1,7 @@
 const express = require('express');
 const Folder = require('../models/Folder');
 const auth = require('../middleware/authMiddleware');
+const Card = require('../models/Card');
 const router = express.Router();
 
 // Все папки пользователя
@@ -50,6 +51,7 @@ router.delete('/:id', auth, async (req, res) => {
     await Card.deleteMany({ folder: folder._id });
     res.json({ message: 'Папка удалена' });
   } catch (err) {
+    console.error('Ошибка при удалении папки:', err);
     res.status(500).json({ message: 'Ошибка удаления' });
   }
 });
