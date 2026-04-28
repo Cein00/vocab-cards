@@ -5,11 +5,12 @@ import { showModal } from './modal.js';
 
 let cards = [];
 
-
-
 export async function loadCards(folderId) {
     try {
-        cards = await apiRequest(`/cards?folderId=${folderId}`);
+        let cardsData = await apiRequest(`/cards?folderId=${folderId}`);
+        // Сортировка по term (слово/фраза) в алфавитном порядке, без учёта регистра
+        cardsData.sort((a, b) => a.term.localeCompare(b.term, undefined, { sensitivity: 'base' }));
+        cards = cardsData;
         renderCards(cards);
         window.updateCardCount?.(cards.length);
     } catch (err) {
@@ -181,7 +182,7 @@ export async function removeDuplicates() {
             await apiRequest(`/cards/${dup.id}`, 'DELETE');
         }
         await loadCards(currentFolder._id);
-        showModal('Готово', `✅ Удалено ${duplicates.length} дубликатов`);
+        showModal('Готово', `Удалено ${duplicates.length} дубликатов`);
     } catch (err) {
         showModal('Ошибка', 'Ошибка при удалении дубликатов: ' + err.message);
         console.error(err);
@@ -193,4 +194,3 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
-
