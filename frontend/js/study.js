@@ -85,13 +85,16 @@ export function startStudy() {
     shuffle = document.getElementById('shuffle-checkbox')?.checked ?? true;
     const showFirst = document.getElementById('show-first-select')?.value ?? 'term';
 
-    studyCards = cards.map(card => ({
-        ...card,
-        showFront: showFirst === 'term' ? card.term : card.translation,
-        showBack: showFirst === 'term' ? card.translation : card.term,
-        frontLang: showFirst === 'term' ? currentFolder?.targetLanguage || 'en' : 'ru',
-        backLang: showFirst === 'term' ? 'ru' : currentFolder?.targetLanguage || 'en',
-    }));
+    // В startStudy()
+const nativeLang = window.appSettings?.nativeLanguage || 'ru';
+
+studyCards = cards.map(card => ({
+    ...card,
+    showFront: showFirst === 'term' ? card.term : card.translation,
+    showBack: showFirst === 'term' ? card.translation : card.term,
+    frontLang: showFirst === 'term' ? currentFolder.targetLanguage : nativeLang,
+    backLang: showFirst === 'term' ? nativeLang : currentFolder.targetLanguage,
+}));
 
     if (shuffle) shuffleArray(studyCards);
     currentIndex = 0;

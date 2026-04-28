@@ -186,7 +186,18 @@
       document.body.className = theme;
     })();
 
-    window.appSettings = { speechEnabled: false };
+    window.appSettings = null; // будет загружено позже
+
+    // Добавить в app.js:
+    window.addEventListener('pageshow', () => {
+        loadUserSettings(); // перезагружаем при возврате из settings
+    });
+
+    window.addEventListener('storage', (e) => {
+    if (e.key === 'appSettings' && e.newValue) {
+        window.appSettings = JSON.parse(e.newValue);
+    }
+});
   </script>
 
   <script type="module" src="js/modal.js"></script>
